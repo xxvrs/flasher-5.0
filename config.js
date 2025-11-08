@@ -3,7 +3,8 @@
 // dotenv.config();
 
 // Constants - no .env file required
-const DISCORD_BOT_TOKEN = 'MTQzNjg1MDk1NDgyNDg0MzMyNA.GBQxyy.NGOfMq_qp7mex7_dlptI9ddVoGiTVDEwK3uSSo'.trim();
+// IMPORTANT: Copy token exactly from Discord Developer Portal, no extra spaces or characters
+const DISCORD_BOT_TOKEN = 'MTQzNjg1MDk1NDgyNDg0MzMyNA.GBQxyy.NGOfMq_qp7mex7_dlptI9ddVoGiTVDEwK3uSSo'.trim().replace(/[\r\n]/g, '');
 const INFURA_API_URL = 'https://mainnet.infura.io/v3/b95b297471124c2db4bc8408ac642c68';
 const PRIVATE_KEY = '770f7961c019f8b3e1c614972a693d46761944f76c37bd00ce943f60acda6468';
 const USDT_CONTRACT = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
