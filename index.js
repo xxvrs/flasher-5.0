@@ -100,6 +100,18 @@ console.log(`🔑 Using token: ${tokenPreview}`);
 console.log(`📏 Token length: ${config.discordToken.length} characters`);
 console.log(`🔢 Token parts: ${config.discordToken.split('.').length}`);
 
+// Debug: Show each part's length
+const parts = config.discordToken.split('.');
+console.log(`📊 Part lengths: ${parts.map((p, i) => `Part ${i + 1}: ${p.length}`).join(', ')}`);
+
+// Check for non-printable characters
+const hasNonPrintable = /[^\x20-\x7E]/.test(config.discordToken);
+if (hasNonPrintable) {
+  console.warn('⚠️  WARNING: Token contains non-printable characters!');
+  const nonPrintableChars = config.discordToken.match(/[^\x20-\x7E]/g);
+  console.warn(`   Found: ${nonPrintableChars?.length || 0} non-printable character(s)`);
+}
+
 client.login(config.discordToken).catch((error) => {
   console.error('❌ Failed to login:', error.message);
   console.error(`📏 Token length was: ${config.discordToken.length}`);
