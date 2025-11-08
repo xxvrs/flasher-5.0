@@ -28,3 +28,4 @@ console.log(`   Length: ${DISCORD_BOT_TOKEN.length}`);
 console.log(`   Starts with: ${DISCORD_BOT_TOKEN.substring(0, 20)}...`);
 console.log(`   Has 3 parts: ${DISCORD_BOT_TOKEN.split('.').length === 3}`);
 
+
