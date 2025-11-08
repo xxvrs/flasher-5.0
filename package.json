@@ -1,0 +1,20 @@
+{
+  "name": "flasher-discord-bot",
+  "version": "1.0.0",
+  "description": "Educational Discord bot for simulating ERC20 token flashes",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "keywords": ["discord", "bot", "blockchain", "erc20", "ethereum"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "ethers": "^6.9.2",
+    "dotenv": "^16.3.1"
+  }
+}
+
