@@ -94,33 +94,53 @@ if (!config.discordToken) {
   process.exit(1);
 }
 
+// Clean and validate token
+const cleanToken = config.discordToken.trim().replace(/[\r\n\t]/g, '');
+
 // Log token status (without exposing the full token)
-const tokenPreview = config.discordToken.substring(0, 10) + '...';
+const tokenPreview = cleanToken.substring(0, 10) + '...';
 console.log(`🔑 Using token: ${tokenPreview}`);
-console.log(`📏 Token length: ${config.discordToken.length} characters`);
-console.log(`🔢 Token parts: ${config.discordToken.split('.').length}`);
+console.log(`📏 Token length: ${cleanToken.length} characters`);
+console.log(`🔢 Token parts: ${cleanToken.split('.').length}`);
 
 // Debug: Show each part's length
-const parts = config.discordToken.split('.');
+const parts = cleanToken.split('.');
 console.log(`📊 Part lengths: ${parts.map((p, i) => `Part ${i + 1}: ${p.length}`).join(', ')}`);
 
+// Validate token format
+if (parts.length !== 3) {
+  console.error('❌ ERROR: Invalid token format! Token must have exactly 3 parts separated by dots.');
+  process.exit(1);
+}
+
 // Check for non-printable characters
-const hasNonPrintable = /[^\x20-\x7E]/.test(config.discordToken);
+const hasNonPrintable = /[^\x20-\x7E]/.test(cleanToken);
 if (hasNonPrintable) {
   console.warn('⚠️  WARNING: Token contains non-printable characters!');
-  const nonPrintableChars = config.discordToken.match(/[^\x20-\x7E]/g);
+  const nonPrintableChars = cleanToken.match(/[^\x20-\x7E]/g);
   console.warn(`   Found: ${nonPrintableChars?.length || 0} non-printable character(s)`);
 }
 
-client.login(config.discordToken).catch((error) => {
-  console.error('❌ Failed to login:', error.message);
-  console.error(`📏 Token length was: ${config.discordToken.length}`);
-  console.error(`🔢 Token parts: ${config.discordToken.split('.').length}`);
-  console.error('💡 Make sure:');
-  console.error('   1. The token in config.js is correct (from Discord Developer Portal)');
-  console.error('   2. The bot is enabled in Discord Developer Portal');
-  console.error('   3. Message Content Intent is enabled in Discord Developer Portal');
-  console.error('   4. The token hasn\'t been reset (if reset, update config.js with new token)');
-  process.exit(1);
-});
+// Try to login with async/await for better error handling
+(async () => {
+  try {
+    console.log('🔐 Attempting to login to Discord...');
+    await client.login(cleanToken);
+    console.log('✅ Login successful!');
+  } catch (error) {
+    console.error('❌ Failed to login:', error.message);
+    console.error(`📏 Token length was: ${cleanToken.length}`);
+    console.error(`🔢 Token parts: ${cleanToken.split('.').length}`);
+    console.error('💡 Make sure:');
+    console.error('   1. The token in config.js is correct (from Discord Developer Portal)');
+    console.error('   2. The bot is enabled in Discord Developer Portal');
+    console.error('   3. Message Content Intent is enabled in Discord Developer Portal');
+    console.error('   4. The token hasn\'t been reset (if reset, update config.js with new token)');
+    console.error('   5. The bot has been invited to at least one server');
+    if (error.code) {
+      console.error(`   Error code: ${error.code}`);
+    }
+    process.exit(1);
+  }
+})();
 
